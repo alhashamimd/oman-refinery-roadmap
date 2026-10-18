@@ -1,0 +1,1011 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Oman Refinery Roadmap</title>
+<meta name="description" content="Interactive roadmap of refinery processing: every station from crude tank to finished product, the specification in and out of each stage, and Oman's three refineries.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Public+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+/* Layout: an engineering drawing sheet. Title block + process-line hub, then numbered branches that follow the real process order. Fixed control bar at the bottom, like a DCS console. */
+:root {
+  --paper: #eef2f4;
+  --sheet: #ffffff;
+  --ink: #13202d;
+  --ink-2: #485766;
+  --ink-3: #6b7a88;
+  --rule: #c8d2da;
+  --rule-soft: #dfe6eb;
+  --grid: rgba(31, 58, 95, 0.055);
+  --line: #1f3a5f;          /* process line / primary */
+  --hot: #c9501c;           /* hot streams, furnace, conversion */
+  --hot-soft: #fbe6dc;
+  --h2: #0f7f55;            /* hydrogen */
+  --h2-soft: #d8f1e6;
+  --sulfur: #9a6d00;        /* sour gas, sulfur */
+  --sulfur-soft: #fbefcc;
+  --blue: #2a78d6;
+  --blue-soft: #dbe9fb;
+  --figmat: #fcfcfb;        /* figures are drawn on a light mat in both themes */
+  --bar: #2a78d6;
+  --seq1: #86b6ef; --seq2: #6da7ec; --seq3: #5598e7; --seq4: #3987e5; --seq5: #2a78d6; --seq6: #256abf; --seq7: #1c5cab;
+  --console: #13202d;
+  --console-ink: #e6edf3;
+  --console-ink-2: #9fb0c0;
+  --console-key: #24384c;
+  --shadow: 0 1px 0 rgba(19, 32, 45, 0.04), 0 8px 24px -12px rgba(19, 32, 45, 0.18);
+
+  --f-display: "Archivo", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
+  --f-body: "Public Sans", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+
+  --s-1: 0.25rem; --s-2: 0.5rem; --s-3: 0.75rem; --s-4: 1rem; --s-5: 1.5rem; --s-6: 2rem; --s-7: 3rem; --s-8: 4.5rem;
+  --radius: 6px;
+  --maxw: 1180px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0d151d; --sheet: #142029; --ink: #e6edf3; --ink-2: #a8b6c3; --ink-3: #82919f;
+    --rule: #2b3b4a; --rule-soft: #22313e; --grid: rgba(143, 179, 221, 0.05);
+    --line: #8fb3dd; --hot: #f08452; --hot-soft: #3a2419; --h2: #3cc48e; --h2-soft: #15322a;
+    --sulfur: #e2b43c; --sulfur-soft: #352c12; --blue: #5598e7; --blue-soft: #18304c;
+    --figmat: #fcfcfb; --bar: #3987e5;
+    --seq1: #3987e5; --seq2: #5598e7; --seq3: #6da7ec; --seq4: #86b6ef; --seq5: #9ec5f4; --seq6: #b7d3f6; --seq7: #cde2fb;
+    --console: #0a1118; --console-ink: #e6edf3; --console-ink-2: #8d9eae; --console-key: #1d2c3a;
+    --shadow: 0 1px 0 rgba(0,0,0,.2), 0 10px 28px -14px rgba(0,0,0,.6);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0d151d; --sheet: #142029; --ink: #e6edf3; --ink-2: #a8b6c3; --ink-3: #82919f;
+  --rule: #2b3b4a; --rule-soft: #22313e; --grid: rgba(143, 179, 221, 0.05);
+  --line: #8fb3dd; --hot: #f08452; --hot-soft: #3a2419; --h2: #3cc48e; --h2-soft: #15322a;
+  --sulfur: #e2b43c; --sulfur-soft: #352c12; --blue: #5598e7; --blue-soft: #18304c;
+  --figmat: #fcfcfb; --bar: #3987e5;
+  --seq1: #3987e5; --seq2: #5598e7; --seq3: #6da7ec; --seq4: #86b6ef; --seq5: #9ec5f4; --seq6: #b7d3f6; --seq7: #cde2fb;
+  --console: #0a1118; --console-ink: #e6edf3; --console-ink-2: #8d9eae; --console-key: #1d2c3a;
+  --shadow: 0 1px 0 rgba(0,0,0,.2), 0 10px 28px -14px rgba(0,0,0,.6);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body { margin: 0; }
+img { max-width: 100%; }
+html { scroll-behavior: smooth; scroll-padding-top: 1rem; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; animation: none !important; } }
+body {
+  background-color: var(--paper);
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 24px 24px;
+  color: var(--ink);
+  font-family: var(--f-body);
+  font-size: 16px;
+  line-height: 1.55;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 0 calc(5.5rem + env(safe-area-inset-bottom, 0px));
+}
+a { color: var(--blue); text-underline-offset: 2px; }
+:focus-visible { outline: 2px solid var(--hot); outline-offset: 2px; border-radius: 3px; }
+.wrap { max-width: var(--maxw); margin: 0 auto; }
+h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; margin: 0; }
+p { margin: 0; }
+.mono { font-family: var(--f-mono); font-variant-numeric: tabular-nums; }
+.eyebrow {
+  font-family: var(--f-mono); font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+/* ---------- title block ---------- */
+.titleblock {
+  margin-top: var(--s-5);
+  display: grid; grid-template-columns: repeat(5, minmax(0, 1fr));
+  border: 1.5px solid var(--line); background: var(--sheet);
+  font-family: var(--f-mono); font-size: 0.72rem;
+}
+.titleblock div { padding: 0.45rem 0.7rem; border-right: 1px solid var(--rule); min-width: 0; }
+.titleblock div:last-child { border-right: 0; }
+.titleblock b { display: block; font-weight: 500; color: var(--ink-3); letter-spacing: 0.06em; text-transform: uppercase; font-size: 0.64rem; }
+.titleblock span { color: var(--ink); font-weight: 500; }
+@media (max-width: 760px) {
+  .titleblock { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .titleblock div { border-bottom: 1px solid var(--rule); }
+  .titleblock div:nth-child(2n) { border-right: 0; }
+  .titleblock div:last-child { grid-column: 1 / -1; border-bottom: 0; }
+}
+
+/* ---------- hero ---------- */
+.hero { padding-block: var(--s-7) var(--s-5); display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-5); }
+.hero > * { min-width: 0; }
+.hero h1 {
+  font-size: clamp(2.6rem, 7.4vw, 5.6rem); line-height: 0.92; letter-spacing: -0.01em;
+  font-weight: 800; font-stretch: 72%; text-transform: uppercase; color: var(--ink);
+}
+.hero h1 em { font-style: normal; color: var(--hot); }
+.hero .lede { max-width: 62ch; font-size: 1.12rem; color: var(--ink-2); }
+.stats { display: flex; flex-wrap: wrap; gap: var(--s-4) var(--s-5); }
+.stat {
+  border-left: 3px solid var(--line); padding: 0.2rem 0 0.2rem 0.8rem; min-width: 0;
+}
+.stat .n { font-family: var(--f-display); font-stretch: 80%; font-weight: 800; font-size: 1.9rem; line-height: 1; font-variant-numeric: tabular-nums; }
+.stat .l { font-size: 0.82rem; color: var(--ink-2); max-width: 22ch; }
+
+/* ---------- process strip (hub) ---------- */
+.hub { background: var(--sheet); border: 1px solid var(--rule); border-radius: var(--radius); box-shadow: var(--shadow); padding: var(--s-4); }
+.hub-head { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--s-2); align-items: baseline; margin-bottom: var(--s-3); }
+.hub-head h2 { font-size: 1.15rem; font-weight: 700; font-stretch: 85%; text-transform: uppercase; letter-spacing: 0.02em; }
+.strip-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+svg.strip { display: block; min-width: 900px; width: 100%; height: auto; }
+.strip .pipe { stroke: var(--line); stroke-width: 2.2; fill: none; }
+.strip .pipe.h2 { stroke: var(--h2); stroke-dasharray: 6 4; stroke-width: 1.6; }
+.strip .pipe.s { stroke: var(--sulfur); stroke-dasharray: 2 4; stroke-width: 1.8; }
+.strip .node { cursor: pointer; }
+.strip .node rect { fill: var(--sheet); stroke: var(--line); stroke-width: 1.6; transition: fill .15s, stroke .15s; }
+.strip .node.hot rect { fill: var(--hot-soft); stroke: var(--hot); }
+.strip .node.h2n rect { fill: var(--h2-soft); stroke: var(--h2); }
+.strip .node.sn rect { fill: var(--sulfur-soft); stroke: var(--sulfur); }
+.strip .node.prod rect { fill: var(--blue-soft); stroke: var(--blue); }
+.strip .node text { fill: var(--ink); font-family: var(--f-body); font-size: 12.5px; font-weight: 600; text-anchor: middle; pointer-events: none; }
+.strip .node text.tag { font-family: var(--f-mono); font-size: 10px; font-weight: 500; fill: var(--ink-3); }
+.strip .node:hover rect, .strip .node:focus rect, .strip .node.on rect { stroke-width: 2.6; filter: drop-shadow(0 2px 6px rgba(0,0,0,.18)); }
+.strip .node:focus { outline: none; }
+.strip .node:focus-visible rect { stroke: var(--hot); stroke-width: 3; }
+.strip text.lbl { fill: var(--ink-3); font-family: var(--f-mono); font-size: 10px; }
+.strip marker path { fill: var(--line); }
+.strip .stagelbl { fill: var(--ink-3); font-family: var(--f-mono); font-size: 10.5px; letter-spacing: .08em; }
+.strip .stageband { fill: var(--grid); }
+.hub-readout {
+  margin-top: var(--s-3); padding: var(--s-3) var(--s-4); border-radius: var(--radius);
+  background: var(--paper); border: 1px dashed var(--rule); min-height: 3.6rem;
+  display: grid; grid-template-columns: auto minmax(0,1fr); gap: var(--s-3); align-items: center;
+}
+.hub-readout .tagbox { font-family: var(--f-mono); font-size: 0.78rem; font-weight: 600; border: 1.5px solid var(--line); padding: .2rem .45rem; border-radius: 3px; white-space: nowrap; }
+.hub-readout p { font-size: 0.95rem; color: var(--ink-2); }
+.hub-readout p b { color: var(--ink); }
+.legend { display: flex; flex-wrap: wrap; gap: var(--s-4); margin-top: var(--s-3); font-size: 0.78rem; color: var(--ink-2); }
+.legend i { display: inline-block; width: 28px; height: 0; border-top: 2.2px solid var(--line); vertical-align: middle; margin-right: 6px; }
+.legend i.h2 { border-top: 2px dashed var(--h2); }
+.legend i.s { border-top: 2px dotted var(--sulfur); }
+
+/* ---------- branches ---------- */
+.branch { padding-block: var(--s-8) 0; }
+.bhead { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: var(--s-4) var(--s-5); align-items: end; border-bottom: 2px solid var(--line); padding-bottom: var(--s-4); margin-bottom: var(--s-5); }
+.bnum { font-family: var(--f-display); font-weight: 900; font-stretch: 62%; font-size: clamp(3.4rem, 8vw, 5.4rem); line-height: 0.8; color: var(--hot); font-variant-numeric: tabular-nums; }
+.bhead h2 { font-size: clamp(1.7rem, 3.4vw, 2.5rem); font-weight: 800; font-stretch: 78%; text-transform: uppercase; line-height: 1; }
+.bhead p { color: var(--ink-2); max-width: 70ch; margin-top: var(--s-2); }
+.bhead .eyebrow { margin-bottom: var(--s-2); display: block; }
+
+.grid { display: grid; gap: var(--s-4); }
+.g2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.g3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.g4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+@media (max-width: 980px) { .g4 { grid-template-columns: repeat(2, minmax(0, 1fr)); } .g3 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 640px) { .g2, .g3, .g4 { grid-template-columns: minmax(0, 1fr); } }
+
+.card {
+  background: var(--sheet); border: 1px solid var(--rule); border-radius: var(--radius);
+  padding: var(--s-4) var(--s-4) var(--s-4); min-width: 0; display: flex; flex-direction: column; gap: var(--s-3);
+}
+.card.feature { box-shadow: var(--shadow); }
+.card h3 { font-size: 1.12rem; font-weight: 700; font-stretch: 88%; letter-spacing: 0.01em; display: flex; align-items: baseline; gap: var(--s-2); flex-wrap: wrap; }
+.card h3 .tag { font-family: var(--f-mono); font-size: 0.7rem; font-weight: 600; color: var(--ink-3); border: 1px solid var(--rule); border-radius: 3px; padding: 0.05rem 0.35rem; letter-spacing: 0.04em; }
+.card p { font-size: 0.94rem; color: var(--ink-2); }
+.card ul { margin: 0; padding-left: 1.1rem; font-size: 0.93rem; color: var(--ink-2); display: grid; gap: 0.3rem; }
+.card ul b, .card p b { color: var(--ink); font-weight: 600; }
+.card .k { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 0.25rem 0.8rem; font-size: 0.86rem; }
+.card .k dt { font-family: var(--f-mono); font-size: 0.72rem; color: var(--ink-3); text-transform: uppercase; letter-spacing: 0.05em; padding-top: 0.15rem; }
+.card .k dd { margin: 0; color: var(--ink); }
+.stripe-hot { border-top: 3px solid var(--hot); }
+.stripe-h2 { border-top: 3px solid var(--h2); }
+.stripe-s { border-top: 3px solid var(--sulfur); }
+.stripe-line { border-top: 3px solid var(--line); }
+.stripe-blue { border-top: 3px solid var(--blue); }
+
+/* in -> out spec */
+.io { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); gap: var(--s-2); align-items: stretch; margin-top: auto; }
+.io > div { background: var(--paper); border: 1px solid var(--rule-soft); border-radius: 4px; padding: 0.5rem 0.65rem; font-size: 0.84rem; min-width: 0; }
+.io .lbl { display: block; font-family: var(--f-mono); font-size: 0.66rem; letter-spacing: .07em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 0.15rem; }
+.io .arrow { display: flex; align-items: center; color: var(--hot); font-family: var(--f-mono); font-weight: 600; font-size: 1.1rem; background: none; border: 0; padding: 0; }
+.io .out { border-color: var(--line); }
+
+/* buttons */
+.btn {
+  appearance: none; font: 600 0.82rem/1 var(--f-body); color: var(--line); background: transparent;
+  border: 1.5px solid var(--line); border-radius: 999px; padding: 0.5rem 0.85rem; cursor: pointer;
+  display: inline-flex; gap: 0.4rem; align-items: center; align-self: flex-start;
+  transition: background .15s, color .15s;
+}
+.btn:hover { background: var(--line); color: var(--sheet); }
+.btn.solid { background: var(--line); color: var(--sheet); }
+.btn.solid:hover { background: var(--hot); border-color: var(--hot); }
+
+/* figure thumbnails */
+.fig {
+  margin: 0; background: var(--figmat); border: 1px solid var(--rule); border-radius: var(--radius); overflow: hidden;
+  display: flex; flex-direction: column; cursor: zoom-in; min-width: 0; text-align: left; padding: 0; font: inherit; color: inherit;
+}
+.fig img { display: block; width: 100%; height: auto; aspect-ratio: auto; }
+.fig figcaption, .fig .cap { background: var(--sheet); border-top: 1px solid var(--rule); padding: 0.55rem 0.75rem; font-size: 0.82rem; color: var(--ink-2); display: flex; justify-content: space-between; gap: var(--s-2); align-items: center; width: 100%; }
+.fig .cap b { color: var(--ink); font-weight: 600; }
+.fig .cap .open { font-family: var(--f-mono); font-size: 0.72rem; color: var(--blue); white-space: nowrap; }
+.fig:hover .cap .open { text-decoration: underline; }
+
+/* tables */
+.tbl-wrap { overflow-x: auto; border: 1px solid var(--rule); border-radius: var(--radius); background: var(--sheet); }
+table { border-collapse: collapse; width: 100%; font-size: 0.88rem; min-width: 640px; }
+th, td { text-align: left; padding: 0.55rem 0.75rem; border-bottom: 1px solid var(--rule-soft); vertical-align: top; }
+th { font-family: var(--f-mono); font-size: 0.7rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-3); font-weight: 600; background: var(--paper); }
+td.num, th.num { text-align: right; font-family: var(--f-mono); font-variant-numeric: tabular-nums; }
+td:first-child { font-weight: 600; color: var(--ink); }
+tr:last-child td { border-bottom: 0; }
+td small { color: var(--ink-3); }
+
+/* charts */
+.chart { display: grid; gap: 0.5rem; }
+.crow { display: grid; grid-template-columns: 11.5rem minmax(0, 1fr); gap: var(--s-3); align-items: center; }
+.crow .name { font-size: 0.84rem; line-height: 1.2; text-align: right; }
+.crow .name small { display: block; font-family: var(--f-mono); font-size: 0.7rem; color: var(--ink-3); }
+.crow .track { position: relative; height: 26px; border-left: 1px solid var(--ink-3); }
+.crow .bar { height: 100%; border-radius: 0 4px 4px 0; min-width: 3px; cursor: default; transition: filter .12s; }
+.crow .bar:hover, .crow .bar:focus-visible { filter: brightness(1.12) saturate(1.1); }
+.crow .val { position: absolute; top: 50%; transform: translateY(-50%); font-family: var(--f-mono); font-size: 0.8rem; color: var(--ink); padding-left: 0.4rem; white-space: nowrap; pointer-events: none; }
+.axis { display: grid; grid-template-columns: 11.5rem minmax(0, 1fr); gap: var(--s-3); }
+.axis .ticks { position: relative; height: 1.2rem; font-family: var(--f-mono); font-size: 0.68rem; color: var(--ink-3); }
+.axis .ticks span { position: absolute; transform: translateX(-50%); }
+.chart-note { font-size: 0.78rem; color: var(--ink-3); }
+@media (max-width: 560px) {
+  .crow, .axis { grid-template-columns: 7.6rem minmax(0, 1fr); }
+  .crow .name { font-size: 0.76rem; }
+}
+.tip {
+  position: fixed; z-index: 60; pointer-events: none; max-width: 260px;
+  background: var(--console); color: var(--console-ink); border-radius: 5px; padding: 0.55rem 0.7rem;
+  font-size: 0.8rem; line-height: 1.4; box-shadow: 0 10px 30px -10px rgba(0,0,0,.5);
+}
+.tip b { display: block; font-family: var(--f-display); font-stretch: 85%; font-size: 0.95rem; margin-bottom: 0.15rem; }
+.tip .r { display: flex; justify-content: space-between; gap: 1rem; font-family: var(--f-mono); font-size: 0.72rem; color: var(--console-ink-2); }
+.tip .r span:last-child { color: var(--console-ink); }
+
+/* timeline */
+.timeline { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0; border-top: 2px solid var(--line); }
+.timeline li { padding: var(--s-3) var(--s-3) 0 0; position: relative; min-width: 0; }
+.timeline li::before { content: ""; position: absolute; top: -7px; left: 0; width: 12px; height: 12px; border-radius: 50%; background: var(--sheet); border: 2.5px solid var(--hot); }
+.timeline .yr { font-family: var(--f-display); font-weight: 800; font-stretch: 75%; font-size: 1.5rem; line-height: 1.1; padding-top: 0.35rem; display: block; }
+.timeline p { font-size: 0.86rem; color: var(--ink-2); }
+@media (max-width: 760px) {
+  .timeline { grid-template-columns: minmax(0, 1fr); border-top: 0; border-left: 2px solid var(--line); }
+  .timeline li { padding: 0 0 var(--s-4) var(--s-4); }
+  .timeline li::before { top: 0.55rem; left: -7px; }
+  .timeline .yr { padding-top: 0; }
+}
+
+.callout { border-left: 3px solid var(--hot); background: var(--hot-soft); padding: 0.7rem 0.9rem; border-radius: 0 4px 4px 0; font-size: 0.9rem; color: var(--ink); }
+.note { font-size: 0.8rem; color: var(--ink-3); margin-top: var(--s-4); max-width: 80ch; }
+.pill { display: inline-block; font-family: var(--f-mono); font-size: 0.68rem; padding: 0.12rem 0.45rem; border-radius: 999px; border: 1px solid currentColor; letter-spacing: 0.04em; text-transform: uppercase; vertical-align: middle; }
+.pill.v { color: var(--h2); }
+.pill.t { color: var(--ink-3); }
+.pill.g { color: var(--sulfur); }
+
+.ref-card .refhead { background: var(--line); color: var(--sheet); margin: calc(-1 * var(--s-4)) calc(-1 * var(--s-4)) 0; padding: var(--s-4); border-radius: var(--radius) var(--radius) 0 0; }
+.ref-card .refhead h3 { color: var(--sheet); font-size: 1.5rem; font-stretch: 75%; font-weight: 800; text-transform: uppercase; }
+.ref-card .refhead p { color: var(--sheet); opacity: 0.85; font-size: 0.85rem; }
+.ref-card .cap { font-family: var(--f-display); font-weight: 800; font-stretch: 75%; font-size: 2.1rem; line-height: 1; font-variant-numeric: tabular-nums; }
+.ref-card .cap small { font-family: var(--f-mono); font-size: 0.75rem; font-weight: 500; color: var(--ink-3); margin-left: 0.3rem; }
+
+.sources ol { margin: 0; padding-left: 1.2rem; display: grid; gap: 0.35rem; font-size: 0.9rem; color: var(--ink-2); }
+.sources h3 { font-size: 0.95rem; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; margin: var(--s-4) 0 var(--s-2); font-stretch: 85%; }
+
+footer.end { margin-top: var(--s-7); padding-top: var(--s-4); border-top: 1px solid var(--rule); font-size: 0.8rem; color: var(--ink-3); display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--s-3); }
+
+/* ---------- console (fixed control bar) ---------- */
+.console {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 50;
+  background: var(--console); color: var(--console-ink);
+  padding: 0.55rem max(16px, env(safe-area-inset-right, 0px)) calc(0.55rem + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+  border-top: 2px solid var(--hot);
+}
+.console .in { max-width: var(--maxw); margin: 0 auto; display: flex; align-items: center; gap: 0.6rem; overflow-x: auto; scrollbar-width: none; }
+.console .in::-webkit-scrollbar { display: none; }
+.console .brand { font-family: var(--f-display); font-weight: 800; font-stretch: 70%; text-transform: uppercase; letter-spacing: 0.03em; white-space: nowrap; font-size: 0.95rem; margin-right: 0.3rem; }
+.console .brand span { color: var(--hot); }
+.console a, .console button.ck {
+  font-family: var(--f-mono); font-size: 0.76rem; color: var(--console-ink-2); text-decoration: none;
+  background: var(--console-key); border: 1px solid transparent; border-radius: 4px; padding: 0.35rem 0.55rem; white-space: nowrap; cursor: pointer;
+}
+.console a:hover, .console button.ck:hover { color: var(--console-ink); border-color: var(--console-ink-2); }
+.console a.on { color: var(--console); background: var(--hot); }
+.console .sep { width: 1px; align-self: stretch; background: var(--console-key); margin: 0 0.15rem; }
+.console .keys { margin-left: auto; font-family: var(--f-mono); font-size: 0.68rem; color: var(--console-ink-2); white-space: nowrap; }
+.console kbd { font-family: var(--f-mono); border: 1px solid var(--console-ink-2); border-radius: 3px; padding: 0 0.25rem; margin-right: 0.15rem; }
+@media (max-width: 900px) { .console .keys { display: none; } }
+
+/* ---------- lightbox ---------- */
+.lb { position: fixed; inset: 0; z-index: 70; background: rgba(8, 14, 20, 0.86); display: grid; grid-template-rows: auto minmax(0, 1fr); padding: max(12px, env(safe-area-inset-top, 0px)) max(12px, env(safe-area-inset-right, 0px)) max(12px, env(safe-area-inset-bottom, 0px)) max(12px, env(safe-area-inset-left, 0px)); }
+.lb-bar { display: flex; justify-content: space-between; align-items: center; gap: 1rem; color: #e6edf3; padding-bottom: 0.6rem; }
+.lb-bar b { font-family: var(--f-display); font-stretch: 80%; font-size: 1.1rem; font-weight: 700; }
+.lb-bar .ctr { display: flex; gap: 0.4rem; }
+.lb-bar button { font: 600 0.8rem/1 var(--f-mono); color: #e6edf3; background: #1d2c3a; border: 1px solid #3a4f63; border-radius: 4px; padding: 0.45rem 0.7rem; cursor: pointer; }
+.lb-bar button:hover { background: #2a4057; }
+.lb-stage { overflow: auto; display: grid; place-items: center; min-height: 0; }
+.lb-stage img { max-width: 100%; max-height: 100%; background: #fcfcfb; border-radius: 4px; }
+.lb-stage.zoom { place-items: start; }
+.lb-stage.zoom img { max-width: none; max-height: none; width: 1600px; }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <div class="titleblock" role="group" aria-label="Drawing title block">
+    <div><b>Drawing</b><span>ORR-001 · Rev A</span></div>
+    <div><b>Subject</b><span>Refinery processing route</span></div>
+    <div><b>Region</b><span>Sultanate of Oman</span></div>
+    <div><b>Prepared by</b><span>Mohamed Al-Hashami</span></div>
+    <div><b>Date</b><span>15 Oct 2026 · Training week 2</span></div>
+  </div>
+
+  <!-- ===================== HUB ===================== -->
+  <section id="hub" class="hero" aria-labelledby="t-hub">
+    <div>
+      <span class="eyebrow">Interactive canvas · Chemical and process engineering</span>
+      <h1 id="t-hub" style="margin-top:.6rem">Oman Refinery <em>Roadmap</em></h1>
+    </div>
+    <p class="lede">Follow crude oil through every station of a refinery, from the receiving tank to the product loading bay. Each stage shows what enters, what leaves, and the specification it has to meet. The last branch compares Oman's three refineries.</p>
+
+    <div class="stats" aria-label="Key figures">
+      <div class="stat"><div class="n mono">534,000</div><div class="l">barrels per day of refining capacity across Oman's three refineries</div></div>
+      <div class="stat"><div class="n mono">54.7%</div><div class="l">of an Oman crude barrel boils above 375 °C and needs vacuum and conversion units</div></div>
+      <div class="stat"><div class="n mono">10 ppm</div><div class="l">sulfur limit for Euro 5 gasoline and diesel at the end of the line</div></div>
+    </div>
+
+    <div class="hub" aria-labelledby="t-strip">
+      <div class="hub-head">
+        <h2 id="t-strip">Process line: hover a station, click to open its branch</h2>
+        <span class="eyebrow">Equipment tags are illustrative</span>
+      </div>
+      <div class="strip-scroll">
+        <svg class="strip" viewBox="0 0 1160 300" role="img" aria-label="Refinery process line from crude tanks to products">
+          <defs>
+            <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z"/></marker>
+            <marker id="ahg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" style="fill:var(--h2)"/></marker>
+            <marker id="ahs" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" style="fill:var(--sulfur)"/></marker>
+          </defs>
+          <!-- stage bands -->
+          <rect class="stageband" x="4" y="22" width="240" height="270" rx="4"/>
+          <rect class="stageband" x="252" y="22" width="232" height="270" rx="4"/>
+          <rect class="stageband" x="492" y="22" width="356" height="270" rx="4"/>
+          <rect class="stageband" x="856" y="22" width="300" height="270" rx="4"/>
+          <text class="stagelbl" x="14" y="16">01 · FEED &amp; PREPARE</text>
+          <text class="stagelbl" x="262" y="16">02 · SEPARATE</text>
+          <text class="stagelbl" x="502" y="16">03–04 · CONVERT &amp; TREAT</text>
+          <text class="stagelbl" x="866" y="16">05–06 · BLEND, SHIP, OMAN</text>
+
+          <!-- pipes -->
+          <path class="pipe" d="M110,160 H128" marker-end="url(#ah)"/>
+          <path class="pipe" d="M226,160 H264" marker-end="url(#ah)"/>
+          <path class="pipe" d="M362,160 H380" marker-end="url(#ah)"/>
+          <path class="pipe" d="M430,196 V238 H380" marker-end="url(#ah)"/>
+          <path class="pipe" d="M478,160 H514" marker-end="url(#ah)"/>
+          <path class="pipe" d="M322,262 H500 V196 H514" marker-end="url(#ah)"/>
+          <path class="pipe" d="M612,160 H650" marker-end="url(#ah)"/>
+          <path class="pipe" d="M748,160 H876" marker-end="url(#ah)"/>
+          <path class="pipe" d="M974,160 H1010" marker-end="url(#ah)"/>
+          <path class="pipe h2" d="M699,92 V122" marker-end="url(#ahg)"/>
+          <path class="pipe s" d="M748,186 H800 V262 H1010" marker-end="url(#ahs)"/>
+          <text class="lbl" x="232" y="152">desalted</text>
+          <text class="lbl" x="482" y="152">cuts</text>
+          <text class="lbl" x="440" y="222">atm. residue</text>
+          <text class="lbl" x="372" y="276">VGO + vac. residue</text>
+          <text class="lbl" x="806" y="152">treated streams</text>
+          <text class="lbl" x="812" y="254">H₂S → sulfur</text>
+          <text class="lbl" x="708" y="104">H₂</text>
+
+          <!-- nodes: data-b = branch, data-i = index in STATIONS -->
+          <g class="node" tabindex="0" role="button" data-i="0" data-b="s1"><rect x="14" y="132" width="96" height="56" rx="6"/><text x="62" y="156">Crude tanks</text><text class="tag" x="62" y="174">TK-101</text></g>
+          <g class="node" tabindex="0" role="button" data-i="1" data-b="s2"><rect x="130" y="132" width="96" height="56" rx="6"/><text x="178" y="156">Desalter</text><text class="tag" x="178" y="174">V-101</text></g>
+          <g class="node hot" tabindex="0" role="button" data-i="2" data-b="s2"><rect x="266" y="132" width="96" height="56" rx="6"/><text x="314" y="156">Furnace</text><text class="tag" x="314" y="174">H-101</text></g>
+          <g class="node" tabindex="0" role="button" data-i="3" data-b="s2"><rect x="382" y="124" width="96" height="72" rx="6"/><text x="430" y="156">Atmospheric</text><text x="430" y="171">column</text><text class="tag" x="430" y="187">C-101</text></g>
+          <g class="node" tabindex="0" role="button" data-i="4" data-b="s2"><rect x="226" y="236" width="96" height="52" rx="6"/><text x="274" y="258">Vacuum col.</text><text class="tag" x="274" y="276">C-201</text></g>
+          <g class="node hot" tabindex="0" role="button" data-i="5" data-b="s3"><rect x="516" y="124" width="96" height="88" rx="6"/><text x="564" y="152">Conversion</text><text x="564" y="167">FCC · HCU</text><text x="564" y="182">coker · CCR</text><text class="tag" x="564" y="200">R-301…</text></g>
+          <g class="node h2n" tabindex="0" role="button" data-i="6" data-b="s4"><rect x="652" y="40" width="96" height="52" rx="6"/><text x="700" y="62">H₂ plant</text><text class="tag" x="700" y="80">SMR + PSA</text></g>
+          <g class="node" tabindex="0" role="button" data-i="7" data-b="s4"><rect x="652" y="124" width="96" height="72" rx="6"/><text x="700" y="152">Treating</text><text x="700" y="167">HDT · amine</text><text class="tag" x="700" y="185">R-401…</text></g>
+          <g class="node sn" tabindex="0" role="button" data-i="8" data-b="s4"><rect x="1012" y="238" width="132" height="46" rx="6"/><text x="1078" y="258">Sulfur (Claus)</text><text class="tag" x="1078" y="274">SRU-601</text></g>
+          <g class="node" tabindex="0" role="button" data-i="9" data-b="s5"><rect x="878" y="124" width="96" height="72" rx="6"/><text x="926" y="152">Blending</text><text x="926" y="167">+ lab</text><text class="tag" x="926" y="185">TK-501…</text></g>
+          <g class="node prod" tabindex="0" role="button" data-i="10" data-b="s5"><rect x="1012" y="110" width="132" height="100" rx="6"/><text x="1078" y="136">Products</text><text x="1078" y="154">LPG · M91/95/98</text><text x="1078" y="170">Jet A-1 · Diesel</text><text x="1078" y="186">Fuel oil · Coke</text></g>
+          <g class="node prod" tabindex="0" role="button" data-i="11" data-b="s6"><rect x="878" y="40" width="266" height="52" rx="6"/><text x="1011" y="62">Refineries in Oman</text><text class="tag" x="1011" y="80">Mina Al Fahal · Sohar · Duqm</text></g>
+        </svg>
+      </div>
+      <div class="hub-readout" aria-live="polite">
+        <span class="tagbox" id="ro-tag">START</span>
+        <p id="ro-text"><b>Pick a station.</b> Hover or tab to a box on the process line to read what happens there, then click to jump to its branch. Keys <span class="mono">1–6</span> also open the branches.</p>
+      </div>
+      <div class="legend" aria-hidden="true">
+        <span><i></i>Process stream</span><span><i class="h2"></i>Hydrogen</span><span><i class="s"></i>Sour gas → sulfur</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== 01 FEED ===================== -->
+  <section id="s1" class="branch" aria-labelledby="t1">
+    <div class="bhead">
+      <div class="bnum">01</div>
+      <div><span class="eyebrow">Stage 0 · Raw material</span><h2 id="t1">Crude feed</h2>
+        <p>The refinery receives crude that was stabilised upstream. Before it enters any unit it is sampled and tested against the purchase contract. The results set the price, the route and how hard each unit has to work.</p></div>
+    </div>
+
+    <div class="grid g2">
+      <div class="card feature stripe-line">
+        <h3>One barrel of Oman crude <span class="tag">TBP ASSAY</span></h3>
+        <p>Yield of each boiling-range cut, wt%. Hover a bar for its sulfur, density and destination.</p>
+        <div class="chart" id="barrel" aria-label="Oman crude yield by cut"></div>
+        <p class="chart-note">Source: TotalEnergies "Crude OMAN TBP" data sheet (assay 2016). Non-overlapping cuts; they sum to 100%.</p>
+      </div>
+      <div class="card stripe-line">
+        <h3>Feed specification <span class="tag">AT RECEIPT</span></h3>
+        <dl class="k">
+          <dt>API</dt><dd class="mono">31.3 °API · 868.7 kg/m³</dd>
+          <dt>Sulfur</dt><dd class="mono">1.41 wt% <small style="color:var(--ink-3)">· sour</small></dd>
+          <dt>TAN</dt><dd class="mono">0.64 mg KOH/g</dd>
+          <dt>Salt</dt><dd class="mono">59 mg/kg ≈ 18 ptb</dd>
+          <dt>Water</dt><dd class="mono">0.1 vol%</dd>
+          <dt>Pour pt</dt><dd class="mono">−36 °C</dd>
+          <dt>RVP</dt><dd class="mono">16 kPa at 37.8 °C</dd>
+          <dt>Ni / V</dt><dd class="mono">10.1 / 10.1 mg/kg</dd>
+        </dl>
+        <div class="io">
+          <div><span class="lbl">Enters</span>Within contract band for API, sulfur, salt and BS&amp;W (commonly ≤ 0.5 vol%)</div>
+          <div class="arrow" aria-hidden="true">→</div>
+          <div class="out"><span class="lbl">Leaves to desalter</span>Metered, sampled (API MPMS Ch. 8), tank water drained</div>
+        </div>
+        <button class="btn" data-fig="fig06">Open full spec sheet ↗</button>
+      </div>
+    </div>
+
+    <div class="tbl-wrap" style="margin-top:var(--s-4)">
+      <table>
+        <thead><tr><th>Property</th><th>Oman value</th><th>Test method</th><th>Why it matters</th></tr></thead>
+        <tbody>
+          <tr><td>API gravity / density</td><td class="mono">31.3 °API</td><td class="mono">ASTM D5002 / D1298</td><td>Grade and price band: a medium crude</td></tr>
+          <tr><td>Sulfur</td><td class="mono">1.41 wt%</td><td class="mono">ASTM D4294</td><td>Sets hydrotreating severity and sulfur recovery load</td></tr>
+          <tr><td>Total acid number</td><td class="mono">0.64 mg KOH/g</td><td class="mono">ASTM D664</td><td>Naphthenic acid corrosion in hot sections</td></tr>
+          <tr><td>Salt (as NaCl)</td><td class="mono">59 mg/kg</td><td class="mono">ASTM D3230 / D6470</td><td>Sets desalter duty</td></tr>
+          <tr><td>Water / BS&amp;W</td><td class="mono">0.1 vol%</td><td class="mono">ASTM D4007 / D4928</td><td>Water carries salt and causes upsets</td></tr>
+          <tr><td>Nickel / vanadium</td><td class="mono">10.1 / 10.1 mg/kg</td><td class="mono">ASTM D5708</td><td>Poison cracking and hydroprocessing catalysts</td></tr>
+          <tr><td>Atm. residue &gt;375 °C</td><td class="mono">54.7 wt% · 2.29 wt% S</td><td class="mono">ASTM D2892</td><td>Over half the barrel needs vacuum and conversion</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">Nickel and vanadium are identical on the assay sheet, which is unusual; confirm against a current assay. Duqm runs Kuwait Export Crude and Oman Export Blend (S&amp;P Global, Feb 2024).</p>
+  </section>
+
+  <!-- ===================== 02 SEPARATE ===================== -->
+  <section id="s2" class="branch" aria-labelledby="t2">
+    <div class="bhead">
+      <div class="bnum">02</div>
+      <div><span class="eyebrow">Stages 1–3 · Physical separation, no reaction</span><h2 id="t2">Desalt and distil</h2>
+        <p>First the salt and water come out. Then heat and boiling point split the crude into cuts, and vacuum recovers the heavy gas oil without cracking it.</p></div>
+    </div>
+
+    <div class="grid g3">
+      <div class="card stripe-line">
+        <h3>Desalter <span class="tag">V-101</span></h3>
+        <ul>
+          <li>Wash water + <b>demulsifier</b> dissolve and free the salt.</li>
+          <li>An <b>electric field</b> makes droplets coalesce and settle.</li>
+          <li>Brine goes to effluent treatment; two stages in series are common.</li>
+          <li>At OXY much of this is done upstream during stabilisation; the refinery desalter is the last line of defence.</li>
+        </ul>
+        <div class="io">
+          <div><span class="lbl">Enters</span><span class="mono">≈ 18 ptb</span> salt, 0.1 vol% water</div>
+          <div class="arrow" aria-hidden="true">→</div>
+          <div class="out"><span class="lbl">Leaves</span><span class="mono">≈ 1 ptb</span> salt, ≤ 0.1–0.3 vol% water</div>
+        </div>
+      </div>
+      <div class="card stripe-hot">
+        <h3>Atmospheric column <span class="tag">H-101 · C-101</span></h3>
+        <ul>
+          <li>Furnace heats crude to <b class="mono">350–370 °C</b>; it partly vaporises.</li>
+          <li>Vapour rises, liquid falls; each tray approaches <b>equilibrium</b>, so light ends move up.</li>
+          <li><b>Side draws</b> take cuts out; <b>steam</b> strips the residue.</li>
+          <li><b>Pumparounds</b> remove heat mid-column and feed it back to the preheat train.</li>
+        </ul>
+        <div class="io">
+          <div><span class="lbl">Enters</span>Desalted crude at 350–370 °C</div>
+          <div class="arrow" aria-hidden="true">→</div>
+          <div class="out"><span class="lbl">Leaves</span>Gas, naphtha, kerosene, gas oil + residue</div>
+        </div>
+        <button class="btn" data-fig="fig02">Open column diagram ↗</button>
+      </div>
+      <div class="card stripe-line">
+        <h3>Vacuum column <span class="tag">C-201</span></h3>
+        <ul>
+          <li>Above about 370 °C hydrocarbons <b>crack</b> and form coke and gums.</li>
+          <li>At <b class="mono">20–50 mmHg</b> absolute, boiling points drop, so heavy cuts are recovered safely.</li>
+          <li>Ejectors hold the vacuum; packing keeps pressure drop low.</li>
+        </ul>
+        <div class="io">
+          <div><span class="lbl">Enters</span>Atm. residue <span class="mono">54.7 wt%</span>, 2.29 wt% S</div>
+          <div class="arrow" aria-hidden="true">→</div>
+          <div class="out"><span class="lbl">Leaves</span>VGO <span class="mono">26.4 wt%</span> + vac. residue <span class="mono">28.3 wt%</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tbl-wrap" style="margin-top:var(--s-4)">
+      <table>
+        <thead><tr><th>Cut</th><th>Boiling range</th><th class="num">Yield wt%</th><th class="num">S wt%</th><th class="num">Density kg/m³</th><th>Goes to</th></tr></thead>
+        <tbody>
+          <tr><td>Gas + LPG</td><td class="mono">&lt;15 °C</td><td class="num">1.1</td><td class="num">—</td><td class="num">—</td><td>Gas plant, amine, LPG</td></tr>
+          <tr><td>Light naphtha</td><td class="mono">15–80 °C</td><td class="num">4.3</td><td class="num">0.02</td><td class="num">655</td><td>Isomerisation, gasoline</td></tr>
+          <tr><td>Heavy naphtha</td><td class="mono">80–150 °C</td><td class="num">8.7</td><td class="num">0.04</td><td class="num">732</td><td>Naphtha hydrotreater → reformer</td></tr>
+          <tr><td>Kerosene</td><td class="mono">150–230 °C</td><td class="num">10.1</td><td class="num">0.11</td><td class="num">785</td><td>Kerosene treating → Jet A-1</td></tr>
+          <tr><td>Gas oil</td><td class="mono">230–375 °C</td><td class="num">21.1</td><td class="num">0.67</td><td class="num">850</td><td>Diesel hydrotreater</td></tr>
+          <tr><td>Vacuum gas oil</td><td class="mono">375–565 °C</td><td class="num">26.4</td><td class="num">1.49</td><td class="num">914</td><td>FCC or hydrocracker</td></tr>
+          <tr><td>Vacuum residue</td><td class="mono">&gt;565 °C</td><td class="num">28.3</td><td class="num">3.04</td><td class="num">995</td><td>Coker, visbreaker, bitumen, fuel oil</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">Yields from the Oman crude assay. Temperatures and pressures are typical industry ranges, not the design of a specific Omani unit.</p>
+  </section>
+
+  <!-- ===================== 03 CONVERT ===================== -->
+  <section id="s3" class="branch" aria-labelledby="t3">
+    <div class="bhead">
+      <div class="bnum">03</div>
+      <div><span class="eyebrow">Stage 4 · Where the value is added</span><h2 id="t3">Conversion units</h2>
+        <p>Distillation only separates what is already in the crude. Conversion units change the molecules: they crack heavy ones into lighter, more valuable ones, or reshape light ones into high-octane gasoline.</p></div>
+    </div>
+
+    <div class="grid g2">
+      <button class="fig" data-fig="fig03" type="button">
+        <img src="assets/fig03_fcc_loop.png" alt="FCC riser and regenerator loop diagram" loading="lazy" width="2200" height="1700">
+        <span class="cap"><span><b>FCC loop.</b> Coke burned in the regenerator carries the heat back to the riser.</span><span class="open">Open ↗</span></span>
+      </button>
+      <div class="card stripe-hot">
+        <h3>FCC versus hydrocracker</h3>
+        <div class="tbl-wrap" style="border:0">
+          <table style="min-width:0">
+            <thead><tr><th></th><th>FCC</th><th>Hydrocracker</th></tr></thead>
+            <tbody>
+              <tr><td>Main product</td><td>Gasoline + olefins</td><td>Diesel + jet fuel</td></tr>
+              <tr><td>Hydrogen</td><td>None consumed</td><td>High; supply drives economics</td></tr>
+              <tr><td>Pressure</td><td>Low</td><td class="mono">70–170 bar</td></tr>
+              <tr><td>Temperature</td><td class="mono">500–540 °C riser</td><td class="mono">350–450 °C</td></tr>
+              <tr><td>Product sulfur</td><td>Needs treating</td><td>Very low from the unit</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>Sohar runs both an RFCC and a hydrocracker. Duqm was built around a hydrocracker and a delayed coker.</p>
+      </div>
+    </div>
+
+    <div class="grid g3" style="margin-top:var(--s-4)">
+      <div class="card stripe-hot"><h3>Fluid catalytic cracking <span class="tag">FCC</span></h3>
+        <dl class="k"><dt>Feed</dt><dd>Vacuum gas oil</dd><dt>Catalyst</dt><dd>Y zeolite (+ ZSM-5)</dd><dt>Conditions</dt><dd class="mono">500–540 °C, seconds</dd><dt>Makes</dt><dd>Gasoline, LPG, olefins, light cycle oil</dd></dl></div>
+      <div class="card stripe-hot"><h3>Hydrocracking <span class="tag">HCU</span></h3>
+        <dl class="k"><dt>Feed</dt><dd>VGO, deasphalted oil</dd><dt>Catalyst</dt><dd>Acid support + Ni, Mo, W</dd><dt>Conditions</dt><dd class="mono">70–170 bar, 350–450 °C</dd><dt>Makes</dt><dd>Low-sulfur diesel, jet, naphtha</dd></dl></div>
+      <div class="card stripe-hot"><h3>Delayed coking</h3>
+        <dl class="k"><dt>Feed</dt><dd>Vacuum residue (3.04 wt% S)</dd><dt>Catalyst</dt><dd>None, thermal</dd><dt>Conditions</dt><dd class="mono">480–510 °C, hours in drum</dd><dt>Makes</dt><dd>Gas, naphtha, gas oil, petroleum coke</dd></dl></div>
+      <div class="card stripe-hot"><h3>Visbreaking</h3>
+        <dl class="k"><dt>Feed</dt><dd>Vacuum residue</dd><dt>Catalyst</dt><dd>None, mild thermal</dd><dt>Conditions</dt><dd class="mono">450–500 °C</dd><dt>Makes</dt><dd>Lower-viscosity fuel oil</dd></dl></div>
+      <div class="card stripe-hot"><h3>Catalytic reforming <span class="tag">CCR</span></h3>
+        <dl class="k"><dt>Feed</dt><dd>Hydrotreated heavy naphtha</dd><dt>Catalyst</dt><dd>Pt-Re / Pt-Sn, chlorided alumina</dd><dt>Limit in</dt><dd class="mono">S, N &lt; 0.5 ppm</dd><dt>Makes</dt><dd>High-octane reformate + H₂</dd></dl></div>
+      <div class="card stripe-hot"><h3>Alkylation and isomerisation</h3>
+        <dl class="k"><dt>Alky feed</dt><dd>C3–C4 olefins + isobutane</dd><dt>Alky cat.</dt><dd>H₂SO₄ or HF acid</dd><dt>Isom feed</dt><dd>C5–C6 light naphtha</dd><dt>Makes</dt><dd>Alkylate and isomerate, high octane, low S</dd></dl></div>
+    </div>
+    <p class="note">Operating ranges are typical industry values, not design data for a specific Omani unit.</p>
+  </section>
+
+  <!-- ===================== 04 TREAT ===================== -->
+  <section id="s4" class="branch" aria-labelledby="t4">
+    <div class="bhead">
+      <div class="bnum">04</div>
+      <div><span class="eyebrow">Stages 5–6 · Clean-up, hydrogen and utilities</span><h2 id="t4">Treating and sulfur recovery</h2>
+        <p>Sulfur matters most. Hydrotreating turns it into H₂S, the amine unit concentrates it, and the Claus unit converts it into elemental sulfur that leaves the refinery as a product.</p></div>
+    </div>
+
+    <button class="fig" data-fig="fig04" type="button">
+      <img src="assets/fig04_sulfur_loop.png" alt="Sulfur path: hydrotreater, amine absorber and regenerator, Claus unit, sour water stripper" loading="lazy" width="2800" height="1600">
+      <span class="cap"><span><b>Sulfur path.</b> From sour feed to treated product and solid sulfur.</span><span class="open">Open ↗</span></span>
+    </button>
+
+    <div class="grid g3" style="margin-top:var(--s-4)">
+      <div class="card stripe-hot"><h3>Hydrotreating <span class="tag">HDT</span></h3>
+        <ul><li>Feed + <b>H₂</b> over <b>CoMo / NiMo</b> on alumina.</li><li class="mono" style="list-style:none;margin-left:-1.1rem">300–400 °C · 30–100 bar</li><li>R-S-R′ + 2 H₂ → RH + R′H + H₂S</li><li>Nitrogen leaves as NH₃; metals stay on the catalyst.</li></ul></div>
+      <div class="card stripe-s"><h3>Amine sweetening <span class="tag">MDEA</span></h3>
+        <ul><li>Lean amine absorbs H₂S from refinery gas.</li><li>Rich amine is heated; acid gas goes to the Claus unit.</li><li><b>MDEA</b> beats MEA on selectivity and regeneration energy.</li></ul></div>
+      <div class="card stripe-s"><h3>Claus sulfur recovery <span class="tag">SRU</span></h3>
+        <ul><li>One third of the H₂S burns to SO₂.</li><li>2 H₂S + SO₂ → 3 S + 2 H₂O</li><li><b class="mono">95–98%</b> recovery; a tail gas unit (SCOT) takes it higher.</li></ul></div>
+      <div class="card stripe-line"><h3>Caustic and Merox</h3>
+        <ul><li>NaOH removes H₂S and mercaptans from LPG and light liquids.</li><li>Merox oxidises mercaptans to disulfides with catalyst and air.</li><li>Spent caustic needs neutralising before disposal.</li></ul></div>
+      <div class="card stripe-line"><h3>Sour water stripper</h3>
+        <ul><li>Steam strips H₂S and NH₃ from process water.</li><li>Stripped water is reused, often as desalter wash water.</li></ul></div>
+      <div class="card stripe-h2"><h3>Hydrogen and utilities <span class="tag">SMR + PSA</span></h3>
+        <ul><li>CH₄ + H₂O → CO + 3 H₂, then shift: CO + H₂O → CO₂ + H₂.</li><li>PSA purifies H₂ to about <b class="mono">99.9 vol%</b>.</li><li>Steam, cooling water, fuel gas, flare and effluent treatment serve every unit.</li></ul></div>
+    </div>
+
+    <div class="tbl-wrap" style="margin-top:var(--s-4)">
+      <table>
+        <thead><tr><th>Stream</th><th>Enters with (Oman straight-run)</th><th>Leaves with (typical target)</th></tr></thead>
+        <tbody>
+          <tr><td>Heavy naphtha</td><td class="mono">0.04 wt% S</td><td>S and N below about 0.5 ppm, to protect the reformer's platinum</td></tr>
+          <tr><td>Kerosene</td><td class="mono">0.11 wt% S</td><td>Jet A-1: S ≤ 0.30 wt%, mercaptans controlled</td></tr>
+          <tr><td>Gas oil</td><td class="mono">0.67 wt% S</td><td>ULSD: S ≤ 10 mg/kg</td></tr>
+          <tr><td>Refinery gas</td><td>H₂S-rich</td><td>Sweet fuel gas; limit set by the environmental permit</td></tr>
+          <tr><td>Acid gas</td><td>Concentrated H₂S</td><td>Elemental sulfur, typically ≥ 99.9 wt% pure</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ===================== 05 PRODUCTS ===================== -->
+  <section id="s5" class="branch" aria-labelledby="t5">
+    <div class="bhead">
+      <div class="bnum">05</div>
+      <div><span class="eyebrow">Stage 7 · Blend, test, release</span><h2 id="t5">Products and specifications</h2>
+        <p>Streams from many units are blended in calculated ratios and dosed with additives. The lab releases a batch only when it meets its specification.</p></div>
+    </div>
+
+    <div class="grid g4">
+      <div class="card stripe-blue"><span class="eyebrow">Gasoline</span><div class="ref-card"><div class="cap">M91 · M95 · M98</div></div><p>Reformate, FCC gasoline, alkylate, isomerate, butane. Oman's standard aligned to <b>Euro 5</b> in July 2019.</p></div>
+      <div class="card stripe-blue"><span class="eyebrow">Diesel</span><div class="ref-card"><div class="cap">10 <small>mg/kg S</small></div></div><p>Hydrotreated and hydrocracked gas oil. Oman's draft spec (2020) follows <b>EN 590</b>; cetane ≥ 51.</p></div>
+      <div class="card stripe-blue"><span class="eyebrow">Jet A-1</span><div class="ref-card"><div class="cap">−47 <small>°C freeze max</small></div></div><p>Treated kerosene. Flash point ≥ 38 °C, sulfur ≤ 0.30 wt%, specific energy ≥ 42.8 MJ/kg.</p></div>
+      <div class="card stripe-s"><span class="eyebrow">By-products</span><div class="ref-card"><div class="cap">S · coke</div></div><p>Sulfur ≥ 99.9 wt% pure. Duqm also sells petroleum coke; its sulfur follows the crude.</p></div>
+    </div>
+
+    <div class="tbl-wrap" style="margin-top:var(--s-4)">
+      <table>
+        <thead><tr><th>Product</th><th>Standard</th><th>Key limits (typical)</th></tr></thead>
+        <tbody>
+          <tr><td>Gasoline</td><td>EN 228 (Euro 5); Oman GSO-based standard, July 2019</td><td>RON 91 / 95 / 98 · S ≤ 10 mg/kg · benzene ≤ 1.0 vol% · aromatics ≤ 35 vol% · olefins ≤ 18 vol% · density 720–775 kg/m³</td></tr>
+          <tr><td>Diesel</td><td>EN 590 (Euro 5); Oman draft based on EN 590:2013+A1:2017</td><td>Cetane ≥ 51 · S ≤ 10 mg/kg · density 820–845 kg/m³ · flash &gt; 55 °C · PAH ≤ 8 wt% · T95 ≤ 360 °C</td></tr>
+          <tr><td>Jet A-1</td><td>DEF STAN 91-091 / ASTM D1655</td><td>Flash ≥ 38 °C · freeze ≤ −47 °C · S ≤ 0.30 wt% · aromatics ≤ 25 vol% · smoke point ≥ 25 mm · density 775–840 kg/m³</td></tr>
+          <tr><td>LPG</td><td>EN 589 / ASTM D1835</td><td>Vapour pressure by grade · total S ≤ 50 mg/kg (EN 589) · copper strip class 1</td></tr>
+          <tr><td>Marine fuel oil</td><td>ISO 8217 + IMO 2020</td><td>S ≤ 0.50 wt% outside ECAs · RMG 380 ≤ 380 mm²/s at 50 °C · density ≤ 991 kg/m³ · flash ≥ 60 °C</td></tr>
+          <tr><td>Naphtha, sulfur, coke</td><td>Buyer contract</td><td>Paraffins, end point and S (naphtha); purity ≥ 99.9 wt% (sulfur); S, volatiles and HGI (coke)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="grid g2" style="margin-top:var(--s-4)">
+      <div class="card"><h3>Oman's retail grades</h3>
+        <dl class="k"><dt>M91</dt><dd>Standard grade for most petrol cars; introduced Nov 2016</dd><dt>M95</dt><dd>Recommended for modern light-vehicle engines</dd><dt>M98</dt><dd>Premium grade launched 2018; Al Maha sells it as POWERPLUS 98</dd><dt>Diesel</dt><dd>Marketed as low-sulfur diesel</dd></dl></div>
+      <div class="card"><h3>Blending rules of thumb</h3>
+        <ul><li><b>Octane</b> blends roughly by volume, but not linearly, so refiners use blending indices.</li><li><b>Sulfur</b> blends by mass: one high-sulfur component can push the batch off spec.</li><li><b>Vapour pressure</b> is trimmed with butane within the seasonal limit.</li><li>Every batch is sampled, tested and certified before release.</li></ul></div>
+    </div>
+    <p class="note">Limits are the commonly quoted values of each standard. Check the current edition and the buyer's contract before use.</p>
+  </section>
+
+  <!-- ===================== 06 OMAN ===================== -->
+  <section id="s6" class="branch" aria-labelledby="t6">
+    <div class="bhead">
+      <div class="bnum">06</div>
+      <div><span class="eyebrow">Focus · Sultanate of Oman</span><h2 id="t6">Refineries in Oman</h2>
+        <p>Three refineries with about 534,000 barrels per day of nameplate capacity. OQ operates Mina Al Fahal and Sohar, and co-owns Duqm with Kuwait Petroleum International.</p></div>
+    </div>
+
+    <div class="card feature stripe-line">
+      <h3>Nameplate crude capacity <span class="tag">THOUSAND B/D</span></h3>
+      <div class="chart" id="capacity" aria-label="Oman refinery capacity"></div>
+      <p class="chart-note">Sources: Climate TRACE via Inzonex; OQ; The Energy Year (Feb 2024); Oil &amp; Gas Journal. Nameplate, not actual runs.</p>
+    </div>
+
+    <div class="grid g3" style="margin-top:var(--s-4)">
+      <div class="card ref-card">
+        <div class="refhead"><h3>Mina Al Fahal</h3><p>Muscat · OQ (formerly ORPIC)</p></div>
+        <div class="cap">106,000<small>b/d</small></div>
+        <dl class="k">
+          <dt>Turnaround</dt><dd>About every 4 years; 45 days in Oct–Nov 2017</dd>
+          <dt>Link</dt><dd>266 km pipeline to Sohar; its residue is reported as Sohar feed</dd>
+          <dt>Units</dt><dd>Unit list not published in the sources reviewed</dd>
+        </dl>
+        <span><span class="pill v">verified</span> <span class="pill g">gap: units</span></span>
+      </div>
+      <div class="card ref-card">
+        <div class="refhead"><h3>Sohar</h3><p>Sohar Industrial Port · OQ</p></div>
+        <div class="cap">198,000<small>b/d</small></div>
+        <dl class="k">
+          <dt>History</dt><dd>116,400 b/d in 2007; SRIP added 82,000 b/d, completed Apr 2019 (US$2.7 bn)</dd>
+          <dt>Units</dt><dd>CDU, VDU, RFCC, hydrocracker (CLG, ~160 bar, ~400 °C), delayed coker, SDA, isomerisation, indirect alkylation, SRU, bitumen blowing</dd>
+          <dt>Products</dt><dd>LPG, gasoline, naphtha, jet, diesel, propylene for polypropylene</dd>
+        </dl>
+        <span class="pill v">verified</span>
+      </div>
+      <div class="card ref-card">
+        <div class="refhead"><h3>Duqm</h3><p>Duqm SEZ, Al Wusta · OQ + KPI 50:50</p></div>
+        <div class="cap">230,000<small>b/d</small></div>
+        <dl class="k">
+          <dt>Timeline</dt><dd>CDU trials Apr 2023; fully operational Feb 2024 (US$9 bn)</dd>
+          <dt>Feed</dt><dd>Medium sour: Kuwait Export Crude + Oman Export Blend</dd>
+          <dt>Units</dt><dd>CDU, hydrocracker, delayed coker</dd>
+          <dt>Products</dt><dd>LPG, naphtha, jet, diesel, sulfur, pet coke; mainly export</dd>
+        </dl>
+        <span class="pill v">verified</span>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:var(--s-4)">
+      <h3>Milestones</h3>
+      <ol class="timeline">
+        <li><span class="yr mono">2007</span><p>Sohar reaches full production at 116,400 b/d.</p></li>
+        <li><span class="yr mono">2017</span><p>Mina Al Fahal 45-day turnaround, part of a four-year cycle.</p></li>
+        <li><span class="yr mono">2019</span><p>SRIP complete: Sohar at 198,000 b/d. Gasoline standard aligned to Euro 5.</p></li>
+        <li><span class="yr mono">2023</span><p>Duqm crude unit starts trial operation in April.</p></li>
+        <li><span class="yr mono">2024</span><p>Duqm fully operational at 230,000 b/d in February.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ===================== FIGURES ===================== -->
+  <section id="figures" class="branch" aria-labelledby="tf">
+    <div class="bhead">
+      <div class="bnum" style="color:var(--line)">F</div>
+      <div><span class="eyebrow">Report-ready · 200 dpi PNG</span><h2 id="tf">Figure set</h2>
+        <p>Every diagram used on this page. Open one full size; the files are in the repository's <span class="mono">assets</span> folder for Word or PowerPoint.</p></div>
+    </div>
+    <div class="grid g3" id="figgrid"></div>
+  </section>
+
+  <!-- ===================== SOURCES ===================== -->
+  <section id="sources" class="branch sources" aria-labelledby="ts">
+    <div class="bhead">
+      <div class="bnum" style="color:var(--line)">S</div>
+      <div><span class="eyebrow">Verified versus typical</span><h2 id="ts">Sources</h2>
+        <p><span class="pill v">verified</span> facts come from the named sources below. <span class="pill t">typical</span> ranges (temperatures, pressures, spec limits) are standard industry values, not the design data of a specific Omani unit.</p></div>
+    </div>
+    <div class="grid g2">
+      <div>
+        <h3>Crude and refineries</h3>
+        <ol>
+          <li><a href="https://ts.totalenergies.com/wp-content/uploads/2020/03/OMAN.pdf" target="_blank" rel="noopener">TotalEnergies, Crude OMAN TBP data sheet</a></li>
+          <li><a href="https://oq.com/en/our-business/our-products/refined-products" target="_blank" rel="noopener">OQ, refined products</a></li>
+          <li><a href="https://www.ogj.com/refining-processing/article/17289519/orpics-mina-al-fahal-refinery-enters-turnaround" target="_blank" rel="noopener">Oil &amp; Gas Journal, Mina Al Fahal turnaround (2017)</a></li>
+          <li><a href="https://www.ogj.com/refining-processing/refining/operations/article/17245109/orpic-completes-installation-of-omans-first-hydrocracker" target="_blank" rel="noopener">Oil &amp; Gas Journal, ORPIC hydrocracker</a></li>
+          <li><a href="https://inzonex.co.uk/industryatlas/uk/plant/orpic-sohar-refinery.html" target="_blank" rel="noopener">Inzonex / Climate TRACE, Sohar and Mina Al Fahal</a></li>
+          <li><a href="https://portfolio-pplus.com/SiteMains/Details/396" target="_blank" rel="noopener">P+ portfolio, Sohar refinery</a></li>
+          <li><a href="https://theenergyyear.com/news/oman-and-kuwait-inaugurate-the-duqm-refinery/" target="_blank" rel="noopener">The Energy Year, Duqm inaugurated (Feb 2024)</a></li>
+          <li><a href="https://www.spglobal.com/energy/en/news-research/latest-news/crude-oil/021424-interview-omans-duqm-refinery-plans-to-exceed-capacity-mulls-upgrading-naphtha-product" target="_blank" rel="noopener">S&amp;P Global, Duqm interview (Feb 2024)</a></li>
+          <li><a href="https://timesofoman.com/article/129045-trial-operation-begins-for-crude-oil-distillation-unit-at-duqm-refinery" target="_blank" rel="noopener">Times of Oman, Duqm CDU trials</a></li>
+        </ol>
+      </div>
+      <div>
+        <h3>Fuels and standards</h3>
+        <ol start="10">
+          <li><a href="https://www.omanobserver.om/article/28566/Head%20stories/new-oman-fuel-standards-from-july-21" target="_blank" rel="noopener">Oman Observer, new fuel standards (2019)</a></li>
+          <li><a href="https://www.omanobserver.om/ampArticle/8588" target="_blank" rel="noopener">Oman Observer, diesel specs (2020)</a></li>
+          <li><a href="https://gulfnews.com/world/gulf/oman/oman-launches--m-98-grade-fuel-1.2159052" target="_blank" rel="noopener">Gulf News, M98 launch (2018)</a></li>
+          <li><a href="https://almaha.com.om/en/products-services/retail-fuels/" target="_blank" rel="noopener">Al Maha, retail fuels</a></li>
+          <li>Standards: EN 228, EN 590, DEF STAN 91-091, ASTM D1655, EN 589, ASTM D1835, ISO 8217, and ASTM test methods named in branch 01.</li>
+        </ol>
+      </div>
+    </div>
+    <footer class="end">
+      <span>Oman Refinery Roadmap · Training notes by Mohamed Al-Hashami, Chemical and Process Engineering (SQU)</span>
+      <span class="mono">ORR-001 · Rev A · 15 Oct 2026</span>
+    </footer>
+  </section>
+</div>
+
+<!-- console -->
+<nav class="console" aria-label="Branches">
+  <div class="in">
+    <span class="brand">Refinery <span>Roadmap</span></span>
+    <a href="#hub" data-sec="hub">0 Hub</a>
+    <span class="sep" aria-hidden="true"></span>
+    <a href="#s1" data-sec="s1">01 Feed</a>
+    <a href="#s2" data-sec="s2">02 Separate</a>
+    <a href="#s3" data-sec="s3">03 Convert</a>
+    <a href="#s4" data-sec="s4">04 Treat</a>
+    <a href="#s5" data-sec="s5">05 Products</a>
+    <a href="#s6" data-sec="s6">06 Oman</a>
+    <span class="sep" aria-hidden="true"></span>
+    <a href="#figures" data-sec="figures">F Figures</a>
+    <a href="#sources" data-sec="sources">S Sources</a>
+    <span class="keys"><kbd>1</kbd>–<kbd>6</kbd> branches · <kbd>0</kbd> hub · <kbd>F</kbd> figures · <kbd>Esc</kbd> close</span>
+  </div>
+</nav>
+
+<!-- lightbox -->
+<div class="lb" id="lb" hidden role="dialog" aria-modal="true" aria-labelledby="lb-title">
+  <div class="lb-bar">
+    <b id="lb-title">Figure</b>
+    <div class="ctr">
+      <button type="button" id="lb-prev" aria-label="Previous figure">‹ Prev</button>
+      <button type="button" id="lb-next" aria-label="Next figure">Next ›</button>
+      <button type="button" id="lb-zoom">Zoom</button>
+      <button type="button" id="lb-close">Close ✕</button>
+    </div>
+  </div>
+  <div class="lb-stage" id="lb-stage"><img id="lb-img" alt=""></div>
+</div>
+
+<div class="tip" id="tip" hidden></div>
+
+<script>
+(function () {
+  "use strict";
+
+  /* ---------------- data ---------------- */
+  var FIGS = [
+    { id: "fig01", file: "assets/fig01_refinery_roadmap.png", title: "Refinery roadmap: block flow diagram", w: 3200, h: 1840 },
+    { id: "fig02", file: "assets/fig02_atmospheric_column.png", title: "Atmospheric column with Oman crude cut yields", w: 2700, h: 2000 },
+    { id: "fig03", file: "assets/fig03_fcc_loop.png", title: "FCC riser-regenerator loop", w: 2200, h: 1700 },
+    { id: "fig04", file: "assets/fig04_sulfur_loop.png", title: "Sulfur path: hydrotreater, amine, Claus", w: 2800, h: 1600 },
+    { id: "fig05", file: "assets/fig05_oman_crude_barrel.png", title: "One barrel of Oman crude by boiling range", w: 2000, h: 1120 },
+    { id: "fig06", file: "assets/fig06_crude_feed_spec.png", title: "Raw material: Oman crude feed specification", w: 2600, h: 1480 },
+    { id: "fig07", file: "assets/fig07_product_specs.png", title: "Finished product specifications", w: 2600, h: 1680 },
+    { id: "fig08", file: "assets/fig08_oman_refinery_capacity.png", title: "Oman refinery capacity", w: 2000, h: 920 },
+    { id: "fig09", file: "assets/fig09_oman_refineries.png", title: "Refineries in Oman at a glance", w: 3000, h: 1720 }
+  ];
+
+  var CUTS = [
+    { n: "Gas + LPG", r: "<15 °C", v: 1.12, s: "—", d: "—", to: "Gas plant, amine, LPG" },
+    { n: "Light naphtha", r: "15–80 °C", v: 4.3, s: "0.02", d: "655", to: "Isomerisation, gasoline" },
+    { n: "Heavy naphtha", r: "80–150 °C", v: 8.7, s: "0.04", d: "732", to: "Hydrotreater → reformer" },
+    { n: "Kerosene", r: "150–230 °C", v: 10.1, s: "0.11", d: "785", to: "Treating → Jet A-1" },
+    { n: "Gas oil", r: "230–375 °C", v: 21.1, s: "0.67", d: "850", to: "Diesel hydrotreater" },
+    { n: "Vacuum gas oil", r: "375–565 °C", v: 26.4, s: "1.49", d: "914", to: "FCC or hydrocracker" },
+    { n: "Vacuum residue", r: ">565 °C", v: 28.3, s: "3.04", d: "995", to: "Coker, visbreaker, fuel oil" }
+  ];
+
+  var REFS = [
+    { n: "Duqm", sub: "OQ + KPI · 2024", v: 230, rows: [["Location", "Duqm SEZ, Al Wusta"], ["Owners", "OQ + KPI, 50:50"], ["Feed", "KEC + Oman Export Blend"], ["Market", "Mainly export"]] },
+    { n: "Sohar", sub: "OQ · 2007, SRIP 2019", v: 198, rows: [["Location", "Sohar, Al Batinah"], ["Start", "116,400 b/d (2007)"], ["SRIP", "+82,000 b/d, Apr 2019"], ["Key units", "RFCC, HCU, coker"]] },
+    { n: "Mina Al Fahal", sub: "OQ · Muscat", v: 106, rows: [["Location", "Muscat"], ["Operator", "OQ"], ["Turnaround", "~every 4 years"], ["Units", "Not published"]] }
+  ];
+
+  var STATIONS = [
+    { tag: "TK-101", t: "<b>Crude tanks.</b> Crude arrives by pipeline or tanker, settles, and is sampled against the contract: Oman crude is 31.3 °API with 1.41 wt% sulfur." },
+    { tag: "V-101", t: "<b>Desalter.</b> Wash water, demulsifier and an electric field cut salt from about 18 ptb to about 1 ptb so the furnace and column do not corrode or foul." },
+    { tag: "H-101", t: "<b>Fired furnace.</b> The preheat train and furnace take crude to 350–370 °C. Any hotter and it starts to crack." },
+    { tag: "C-101", t: "<b>Atmospheric column.</b> Splits crude by boiling range into gas, naphtha, kerosene and gas oil. The 54.7 wt% that boils above 375 °C leaves as residue." },
+    { tag: "C-201", t: "<b>Vacuum column.</b> At 20–50 mmHg the residue gives up 26.4 wt% vacuum gas oil without cracking; 28.3 wt% stays as vacuum residue." },
+    { tag: "R-301", t: "<b>Conversion.</b> FCC, hydrocracker, coker, visbreaker, reformer, alkylation and isomerisation turn heavy or low-octane streams into valuable fuels." },
+    { tag: "SMR", t: "<b>Hydrogen plant.</b> Steam methane reforming plus PSA supplies H₂ at about 99.9 vol% to the hydrotreaters and hydrocracker." },
+    { tag: "R-401", t: "<b>Treating.</b> Hydrotreaters take gas oil from 0.67 wt% sulfur to 10 mg/kg. Amine units collect the H₂S." },
+    { tag: "SRU-601", t: "<b>Sulfur recovery.</b> The Claus unit converts H₂S to elemental sulfur at 95–98% recovery; a tail gas unit takes it higher." },
+    { tag: "TK-501", t: "<b>Blending and lab.</b> Components are blended to spec, dosed with additives and released only after the lab certifies the batch." },
+    { tag: "PRODUCTS", t: "<b>Products.</b> LPG, gasoline M91/M95/M98, Jet A-1, 10 ppm diesel, fuel oil, petroleum coke and sulfur." },
+    { tag: "OMAN", t: "<b>Refineries in Oman.</b> Mina Al Fahal 106,000 b/d, Sohar 198,000 b/d and Duqm 230,000 b/d: about 534,000 b/d in total." }
+  ];
+
+  var SEQ = ["--seq1", "--seq2", "--seq3", "--seq4", "--seq5", "--seq6", "--seq7"];
+
+  /* ---------------- tooltip ---------------- */
+  var tip = document.getElementById("tip");
+  function showTip(html, x, y) {
+    tip.innerHTML = html;
+    tip.hidden = false;
+    var r = tip.getBoundingClientRect();
+    var nx = Math.min(x + 14, window.innerWidth - r.width - 8);
+    var ny = y - r.height - 12;
+    if (ny < 8) ny = y + 18;
+    tip.style.left = Math.max(8, nx) + "px";
+    tip.style.top = ny + "px";
+  }
+  function hideTip() { tip.hidden = true; }
+  function rowsHtml(rows) {
+    return rows.map(function (r) { return '<div class="r"><span>' + r[0] + '</span><span>' + r[1] + '</span></div>'; }).join("");
+  }
+
+  /* ---------------- bar chart builder ---------------- */
+  function buildBars(el, items, max, ticks, colorFn, labelFn, tipFn, fmt) {
+    var html = "";
+    items.forEach(function (it, i) {
+      var pct = (it.v / max) * 100;
+      html += '<div class="crow"><div class="name">' + labelFn(it) + '</div>' +
+        '<div class="track"><div class="bar" tabindex="0" data-i="' + i + '" style="width:' + pct.toFixed(2) + '%;background:' + colorFn(it, i) + '" aria-label="' + it.n + ': ' + fmt(it.v) + '"></div>' +
+        '<span class="val" style="left:' + pct.toFixed(2) + '%">' + fmt(it.v) + '</span></div></div>';
+    });
+    html += '<div class="axis"><span></span><div class="ticks">' + ticks.map(function (t) {
+      return '<span style="left:' + ((t / max) * 100).toFixed(2) + '%">' + t + '</span>';
+    }).join("") + "</div></div>";
+    el.innerHTML = html;
+    el.querySelectorAll(".bar").forEach(function (b) {
+      var it = items[+b.dataset.i];
+      b.addEventListener("pointermove", function (e) { showTip(tipFn(it), e.clientX, e.clientY); });
+      b.addEventListener("pointerleave", hideTip);
+      b.addEventListener("focus", function () { var r = b.getBoundingClientRect(); showTip(tipFn(it), r.right, r.top); });
+      b.addEventListener("blur", hideTip);
+    });
+  }
+
+  buildBars(document.getElementById("barrel"), CUTS, 30, [0, 10, 20, 30],
+    function (it, i) { return "var(" + SEQ[i] + ")"; },
+    function (it) { return it.n + "<small>" + it.r + "</small>"; },
+    function (it) { return "<b>" + it.n + " · " + it.r + "</b>" + rowsHtml([["Yield", it.v.toFixed(1) + " wt%"], ["Sulfur", it.s + " wt%"], ["Density", it.d + " kg/m³"], ["Goes to", it.to]]); },
+    function (v) { return v.toFixed(1) + "%"; });
+
+  buildBars(document.getElementById("capacity"), REFS, 250, [0, 50, 100, 150, 200, 250],
+    function () { return "var(--bar)"; },
+    function (it) { return it.n + "<small>" + it.sub + "</small>"; },
+    function (it) { return "<b>" + it.n + " · " + it.v + ",000 b/d</b>" + rowsHtml(it.rows) + '<div class="r"><span>Share of Oman</span><span>' + Math.round(it.v / 534 * 100) + "%</span></div>"; },
+    function (v) { return v + "k b/d"; });
+
+  /* ---------------- hub interactions ---------------- */
+  var roTag = document.getElementById("ro-tag"), roText = document.getElementById("ro-text");
+  var nodes = document.querySelectorAll(".strip .node");
+  function readout(i) {
+    var s = STATIONS[i]; if (!s) return;
+    roTag.textContent = s.tag; roText.innerHTML = s.t;
+    nodes.forEach(function (n) { n.classList.toggle("on", +n.dataset.i === i); });
+  }
+  nodes.forEach(function (n) {
+    var i = +n.dataset.i;
+    n.addEventListener("pointerenter", function () { readout(i); });
+    n.addEventListener("focus", function () { readout(i); });
+    function go() { var t = document.getElementById(n.dataset.b); if (t) t.scrollIntoView({ block: "start" }); }
+    n.addEventListener("click", go);
+    n.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); go(); } });
+  });
+
+  /* ---------------- figure grid + lightbox ---------------- */
+  var grid = document.getElementById("figgrid");
+  grid.innerHTML = FIGS.map(function (f) {
+    return '<button class="fig" type="button" data-fig="' + f.id + '"><img src="' + f.file + '" alt="' + f.title + '" loading="lazy" width="' + f.w + '" height="' + f.h + '"><span class="cap"><span><b>' + f.id.replace("fig", "Fig. ") + '</b> ' + f.title + '</span><span class="open">Open ↗</span></span></button>';
+  }).join("");
+
+  var lb = document.getElementById("lb"), lbImg = document.getElementById("lb-img"), lbTitle = document.getElementById("lb-title"), lbStage = document.getElementById("lb-stage");
+  var cur = 0, lastFocus = null;
+  function openFig(id) {
+    var i = FIGS.findIndex(function (f) { return f.id === id; });
+    if (i < 0) return;
+    cur = i; lastFocus = document.activeElement; render(); lb.hidden = false; hideTip();
+    document.getElementById("lb-close").focus();
+  }
+  function render() {
+    var f = FIGS[cur];
+    lbImg.src = f.file; lbImg.alt = f.title;
+    lbTitle.textContent = f.id.replace("fig", "Fig. ") + " · " + f.title;
+    lbStage.classList.remove("zoom"); document.getElementById("lb-zoom").textContent = "Zoom";
+  }
+  function closeLb() { lb.hidden = true; if (lastFocus && lastFocus.focus) lastFocus.focus(); }
+  function step(d) { cur = (cur + d + FIGS.length) % FIGS.length; render(); }
+  document.addEventListener("click", function (e) {
+    var b = e.target.closest("[data-fig]");
+    if (b) { e.preventDefault(); openFig(b.dataset.fig); }
+  });
+  document.getElementById("lb-close").addEventListener("click", closeLb);
+  document.getElementById("lb-prev").addEventListener("click", function () { step(-1); });
+  document.getElementById("lb-next").addEventListener("click", function () { step(1); });
+  document.getElementById("lb-zoom").addEventListener("click", function () {
+    var z = lbStage.classList.toggle("zoom"); this.textContent = z ? "Fit" : "Zoom";
+  });
+  lb.addEventListener("click", function (e) { if (e.target === lb || e.target === lbStage) closeLb(); });
+
+  /* ---------------- console + keyboard ---------------- */
+  var links = document.querySelectorAll(".console a[data-sec]");
+  var secs = Array.prototype.map.call(links, function (a) { return document.getElementById(a.dataset.sec); });
+  function setOn(id) { links.forEach(function (a) { a.classList.toggle("on", a.dataset.sec === id); }); }
+  if ("IntersectionObserver" in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) { if (en.isIntersecting) setOn(en.target.id); });
+    }, { rootMargin: "-35% 0px -60% 0px" });
+    secs.forEach(function (s) { if (s) io.observe(s); });
+  }
+  setOn("hub");
+
+  var KEYMAP = { "0": "hub", "1": "s1", "2": "s2", "3": "s3", "4": "s4", "5": "s5", "6": "s6", "f": "figures", "s": "sources" };
+  document.addEventListener("keydown", function (e) {
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    if (!lb.hidden) {
+      if (e.key === "Escape") { e.preventDefault(); closeLb(); }
+      else if (e.key === "ArrowRight") step(1);
+      else if (e.key === "ArrowLeft") step(-1);
+      return;
+    }
+    if (e.key === "Escape") { hideTip(); return; }
+    var id = KEYMAP[e.key.toLowerCase()];
+    if (id) { var t = document.getElementById(id); if (t) { e.preventDefault(); t.scrollIntoView({ block: "start" }); setOn(id); } }
+  });
+  window.addEventListener("scroll", hideTip, { passive: true });
+})();
+</script>
+
+</body>
+</html>
